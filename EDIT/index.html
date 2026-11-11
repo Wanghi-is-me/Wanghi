@@ -1,102 +1,877 @@
 <!DOCTYPE html>
-
-<html lang="vi">
-
+<html lang="en" class="h-full overflow-hidden">
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanghi Portfolio - Cosmic Liquid Glass Desktop Edition</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            glow: '#60a5fa',
+                            dark: '#000000',
+                            glass: 'rgba(255, 255, 255, 0.03)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
-            <title>Portfolio - Tên của bạn</title>
+    <style>
+        /* Pure Pitch Black Background Styling */
+        body {
+            background-color: #000000;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+        }
 
-                <link rel="stylesheet" href="style.css">
+        /* Modern Ultra Liquid Glass Styling */
+        .liquid-glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.001) 100%);
+            backdrop-filter: blur(28px) saturate(150%);
+            -webkit-backdrop-filter: blur(28px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                inset 0 -1px 20px rgba(255, 255, 255, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
 
-                </head>
+        /* Highlight Specular Glare Effect */
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                60deg,
+                transparent 40%,
+                rgba(255, 255, 255, 0.1) 45%,
+                rgba(255, 255, 255, 0.02) 50%,
+                transparent 70%
+            );
+            pointer-events: none;
+            transform: translateY(-50%) rotate(15deg);
+            transition: transform 0.6s ease;
+        }
 
-                <body>
+        .liquid-glass:hover::before {
+            transform: translateY(0%) rotate(15deg);
+        }
 
-                    <header>
+        .glass-card {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-                            <h1>Xin chào, tôi là <span id="name">Hoang Hai </span></h1>
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.55);
+            border-color: rgba(96, 165, 250, 0.4);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+        }
 
-                                    <p>Intern Developer | Designer | Freelancer</p>
+        /* Subtle Focused Mouse Spotlight */
+        #spotlight {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 2;
+            background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(96, 165, 250, 0.14), transparent 100%);
+            transition: opacity 0.2s ease;
+        }
 
-                                        </header>
+        /* 3D Card Perspective Container */
+        .card-perspective {
+            perspective: 1200px;
+        }
 
-                                            <section id="about">
+        .card-3d-wrapper {
+            width: 320px;
+            height: 460px;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            cursor: pointer;
+            user-select: none;
+        }
 
-                                                    <img src="https://thuvienmeme.com/wp-content/uploads/2024/05/meo-chi-tay-cuoi-ha-ha-vao-mat-ban.jpg" alt="Avatar" class="avatar">
-                                                            <p>Tôi là một lập trình viên đang còn học tập, tôi yêu công nghệ và sáng tạo.</p>
+        .card-3d-wrapper.flipped {
+            transform: rotateY(180deg) !important;
+        }
 
-                                                                </section>
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 24px;
+            overflow: hidden;
+        }
 
-                                                                    <section id="skills">
+        .card-back {
+            transform: rotateY(180deg);
+        }
 
-                                                                            <h2>Skill của tôi =)</h2>
+        /* Smooth Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-                                                                                    <ul>
+        .glow-title {
+            text-shadow: 0 0 35px rgba(59, 130, 246, 0.45);
+        }
 
-                                                                                                <li> Bốc phét, chém gió</li>
+        /* Section Container Scroll Snap Behavior */
+        .scroll-container {
+            height: 100vh;
+            overflow-y: hidden;
+            position: relative;
+        }
 
-                                                                                                            <li> Học ngu Math và English</li>
+        .section-page {
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(40px) scale(0.97);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 6rem;
+            padding-bottom: 3rem;
+        }
 
-                                                                                                                        <li> Biết một chút Html, Css và JS</li>
+        .section-page.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            z-index: 10;
+        }
 
-                                                                                                                                    <li> Chơi Genshin =)</li>
+        /* Energy Charging Visual Indicator */
+        #charge-bar {
+            transition: width 0.1s linear, opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-black text-slate-100 font-sans antialiased selection:bg-blue-600 selection:text-white h-full overflow-hidden">
 
-                                                                                                                                            </ul>
+    <!-- Mobile Warning Overlay Banner (Tự động hiển thị khi vào bằng điện thoại) -->
+    <div id="mobile-warning" class="hidden fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center text-center p-6 space-y-4">
+        <div class="w-16 h-16 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-3xl border border-blue-400/40 shadow-[0_0_25px_rgba(59,130,246,0.5)]">
+            <i class="fa-solid fa-desktop"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">Recommended for use on a PC</h2>
+        <p class="text-slate-300 text-sm max-w-sm leading-relaxed">
+            This profile is specifically designed for desktop screens. Please enable <strong class="text-blue-400">"Desktop site mode"</strong> on your mobile browser.
+        </p>
+        <button onclick="dismissMobileWarning()" class="px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+            Understand, continue
+        </button>
+    </div>
 
-                                                                                                                                                </section>
+    <!-- Interactive Canvas Backdrop (Meteor Shooting Stars) -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
 
-                                                                                                                                                    <section id="projects">
+    <!-- Compact Cursor Spotlight -->
+    <div id="spotlight"></div>
 
-                                                                                                                                                            <h2>My Idea Project in Future</h2>
+    <!-- Energy Scroll Progress Charge Bar (Top Edge) -->
+    <div class="fixed top-0 left-0 w-full h-1 z-50 bg-white/5">
+        <div id="charge-bar" class="h-full bg-gradient-to-r from-blue-500 via-indigo-400 to-cyan-300 w-0 opacity-0 shadow-[0_0_12px_#3b82f6]"></div>
+    </div>
 
-                                                                                                                                                                    <div class="project">
+    <!-- Liquid Glass Floating Header Navigation -->
+    <header class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-xl">
+        <nav class="liquid-glass px-5 py-3 rounded-full flex items-center justify-between shadow-2xl">
+            <div class="flex items-center space-x-2 w-full justify-around">
+                <button onclick="goToSection(0)" class="nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all text-white bg-blue-600/50 border border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.5)]">Home</button>
+                <button onclick="goToSection(1)" class="nav-btn px-5 py-2 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all">About</button>
+                <button onclick="goToSection(2)" class="nav-btn px-5 py-2 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all">Portfolio</button>
+                <button onclick="goToSection(3)" class="nav-btn px-5 py-2 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all">Contact</button>
+            </div>
+            <button id="audio-toggle" title="Toggle Ambient Audio" class="ml-3 w-9 h-9 rounded-full bg-white/5 border border-white/20 flex items-center justify-center text-slate-300 hover:text-blue-400 hover:border-blue-400/50 transition-all flex-shrink-0">
+                <i class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+        </nav>
+    </header>
 
-                                                                                                                                                                                <img src="https://chelsweets.com/wp-content/uploads/2022/01/best-cake-slice-and-cake-with-product-2-864x1080.jpg.webp" alt="Project 1">
+    <!-- MAIN SCROLL CONTAINER (Optimized Full-Width Desktop Grid) -->
+    <main class="scroll-container w-full h-full">
 
-                                                                                                                                                                                            <p>Website bán Bánh Sinh Nhật=) </p>
+        <!-- ================= SECTION 1: HOME ================= -->
+        <section class="section-page active px-8 lg:px-20 max-w-[1550px] mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
+                
+                <!-- Left Hero Bio Content -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full liquid-glass text-xs font-semibold text-blue-400 border border-blue-400/30">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse shadow-[0_0_10px_#60a5fa]"></span>
+                        Available for Freelance 3D Design
+                    </div>
 
-                                                                                                                                                                                                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
+                        Welcome to <br>
+                        <span class="text-gradient glow-title">My Profile</span>
+                    </h1>
 
-                                                                                                                                                                                                            <div class="project">
+                    <p class="text-xl lg:text-2xl text-blue-400 font-mono tracking-wide font-medium">
+                        3D Designer & Animator <span class="animate-ping text-white">|</span>
+                    </p>
 
-                                                                                                                                                                                                                        <img src="https://d1ng1bucl7w66k.cloudfront.net/ghost-blog/2022/12/Screen-Shot-2022-12-20-at-1.49.27-PM.png" alt="Project 2">
+                    <p class="text-slate-300 text-base lg:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
+                        Bringing imagination to life. I specialize in 3D modeling, character design, environment creation, and VFX
+                    </p>
 
-                                                                                                                                                                                                                                    <p> Code game in Roblox Studio</p>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-5 pt-3">
+                        <button onclick="goToSection(2)" class="px-8 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all duration-300 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_40px_rgba(59,130,246,0.8)] flex items-center gap-3 group">
+                            <span>Explore</span>
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1.5 transition-transform"></i>
+                        </button>
+                        <button onclick="goToSection(3)" class="px-8 py-4 rounded-full liquid-glass hover:bg-white/10 text-white font-bold text-sm transition-all duration-300 flex items-center gap-3">
+                            <span>Contact</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </div>
 
-                                                                                                                                                                                                                                            </div>
+                    <!-- Social Media Links (GitHub, Discord, Facebook, Gmail, TikTok) -->
+                    <div class="flex items-center justify-center lg:justify-start gap-4 pt-6 text-slate-400 flex-wrap">
+                        <span class="text-xs uppercase tracking-widest font-semibold text-slate-500 mr-1 font-mono">CONNECT:</span>
+                        
+                        <!-- 1. GitHub -->
+                        <a href="https://github.com/Wanghi-is-me/HoangHai" target="_blank" title="GitHub" class="w-11 h-11 rounded-full liquid-glass flex items-center justify-center hover:text-blue-400 hover:border-blue-400/50 transition-all text-lg">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
 
-                                                                                                                                                                                                                                                </section>
+                        <!-- 2. Discord -->
+                        <a href="wanghi_is_me" target="_blank" title="Discord" class="w-11 h-11 rounded-full liquid-glass flex items-center justify-center hover:text-blue-400 hover:border-blue-400/50 transition-all text-lg">
+                            <i class="fa-brands fa-discord"></i>
+                        </a>
 
-                                                                                                                                                                                                                                                    <section id="contact">
+                        <!-- 3. Facebook -->
+                        <a href="https://www.facebook.com/hoanghai.is.me" target="_blank" title="Facebook" class="w-11 h-11 rounded-full liquid-glass flex items-center justify-center hover:text-blue-400 hover:border-blue-400/50 transition-all text-lg">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
 
-                                                                                                                                                                                                                                                            <h2>If you are interested, please contact me for cooperation, Thanks</h2>
+                        <!-- 4. Gmail -->
+                        <a href="mailto:haisaoke999@gmail.com" title="Gmail" class="w-11 h-11 rounded-full liquid-glass flex items-center justify-center hover:text-blue-400 hover:border-blue-400/50 transition-all text-lg">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
 
-                                                                                                                                                                                                                                                                    <form>
+                        <!-- 5. TikTok -->
+                        <a href="https://www.tiktok.com/@wanghi_is_me?is_from_webapp=1&sender_device=pc" target="_blank" title="TikTok" class="w-11 h-11 rounded-full liquid-glass flex items-center justify-center hover:text-blue-400 hover:border-blue-400/50 transition-all text-lg">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
 
-                                                                                                                                                                                                                                                                                <input type="text" placeholder="User" required>
+                <!-- Right 3D Interactive Tilt & Flip Card -->
+                <div class="lg:col-span-5 flex items-center justify-center relative h-[520px]">
+                    <div class="card-perspective relative z-30 flex items-center justify-center">
+                        <div id="id-card" class="card-3d-wrapper" onclick="toggleCardFlip(event)">
+                            
+                            <!-- Card FRONT -->
+                            <div class="card-face liquid-glass p-3 flex flex-col justify-between border border-blue-400/30 shadow-2xl">
+                                <div class="w-full h-full rounded-2xl overflow-hidden relative group bg-slate-900">
+                                    <img src="https://i.pinimg.com/originals/6b/b8/d8/6bb8d8e8b3d813ab417059646be89c3a.jpg" alt="Front ID Image" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-6">
+                                        <div class="w-full flex justify-between items-center">
+                                            <span class="text-xs font-mono font-semibold text-white bg-black/50 px-3.5 py-1.5 rounded-full backdrop-blur-md border border-white/10">Donate</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                                                                                                                                                                                                                                                            <input type="email" placeholder="Email" required>
+                            <!-- Card BACK -->
+                            <div class="card-face card-back liquid-glass p-3 flex flex-col justify-between border border-cyan-400/30 shadow-2xl">
+                                <div class="w-full h-full rounded-2xl overflow-hidden relative group bg-slate-900">
+                                    <img src="https://i.pinimg.com/736x/13/06/08/130608bb1712fd761e2b4d7cd060749b.jpg" alt="Back ID Image" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-6">
+                                        <div class="w-full flex justify-between items-center">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                                                                                                                                                                                                                                                                                        <textarea placeholder="Tin nhắn" required></textarea>
+                        </div>
+                    </div>
+                </div>
 
-                                                                                                                                                                                                                                                                                                                    <button type="submit">Gửi Ngay</button>
+            </div>
+        </section>
 
-                                                                                                                                                                                                                                                                                                                            </form>
 
-                                                                                                                                                                                                                                                                                                                                </section>
+        <!-- ================= SECTION 2: ABOUT ================= -->
+        <section class="section-page px-8 lg:px-20 max-w-[1550px] mx-auto">
+            <div class="w-full space-y-10">
+                
+                <div class="text-center space-y-3">
+                    <h2 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-gradient glow-title">About Me</h2>
+                    <p class="text-slate-400 text-sm sm:text-base max-w-lg mx-auto font-mono">Just a guy with passion for technology</p>
+                </div>
 
-                                                                                                                                                                                                                                                                                                                                    <footer>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <!-- Left Bio -->
+                    <div class="lg:col-span-4 space-y-6 text-center lg:text-left order-2 lg:order-1">
+                        <div class="liquid-glass p-8 rounded-3xl space-y-3">
+                            <h3 class="text-2xl font-bold text-white">Hi, I'm <span class="text-blue-400">Wanghi</span></h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                I am a 3D model designer with a passion for transforming imaginative concepts into vivid, engaging environments. I utilize advanced rendering techniques to optimize graphics for games.
+                            </p>
+                        </div>
 
-                                                                                                                                                                                                                                                                                                                                            <p>&copy; 2025 HoangHaiMedia. All Rights Reserved.</p>
+                        <div class="liquid-glass p-6 rounded-3xl space-y-4 font-mono text-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">EXP:</span>
+                                <span class="font-bold text-white">2+ Years</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Project under development:</span>
+                                <span class="font-bold text-blue-400">5+ Projects</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Style:</span>
+                                <span class="font-bold text-white">Realistic-Anime</span>
+                            </div>
+                        </div>
+                    </div>
 
-                                                                                                                                                                                                                                                                                                                                                </footer>
+                    <!-- Center Avatar Setup Image -->
+                    <div class="lg:col-span-4 flex justify-center order-1 lg:order-2">
+                        <div class="relative group">
+                            <div class="absolute -inset-1.5 bg-gradient-to-r from-blue-0 to-indigo-600 rounded-3xl blur-lg opacity-40 group-hover:opacity-75 transition duration-1000"></div>
+                            
+                            <div class="relative liquid-glass rounded-3xl p-4 max-w-sm border border-white/20">
+                                <img src="https://i.pinimg.com/736x/63/00/aa/6300aa8343bd8353eccb35ee43cea3c2.jpg" alt="Portrait" class="rounded-2xl w-full h-[400px] object-cover">
+                            </div>
+                        </div>
+                    </div>
 
-                                                                                                                                                                                                                                                                                                                                                    <script src="script.js"></script>
+                    <!-- Right Bio -->
+                    <div class="lg:col-span-4 space-y-6 text-center lg:text-left order-3">
+                        <div class="liquid-glass p-8 rounded-3xl space-y-3">
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                My workflow focuses on sculpting the finest details in ZBrush and standardizing the polygon mesh in Maya.
+                            </p>
+                        </div>
 
-                                                                                                                                                                                                                                                                                                                                                    </body>
+                        <div class="liquid-glass p-6 rounded-3xl space-y-4">
+                            <button onclick="goToSection(3)" class="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Contact me</span>
+                            </button>
+                            <button onclick="goToSection(2)" class="w-full py-3.5 rounded-2xl liquid-glass text-slate-200 font-bold text-sm hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <span>Explore</span>
+                            </button>
+                        </div>
+                    </div>
 
-                                                                                                                                                                                                                                                                                                                                                    </html>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= SECTION 3: PORTFOLIO ================= -->
+        <section class="section-page px-8 lg:px-20 max-w-[1550px] mx-auto">
+            <div class="w-full space-y-8">
+                
+                <div class="text-center space-y-3">
+                    <h2 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-gradient glow-title">Portfolio</h2>
+                    <p class="text-slate-400 text-sm sm:text-base max-w-lg mx-auto font-mono">Class is permanent</p>
+                </div>
+
+                <!-- Liquid Sub-Tabs Bar -->
+                <div class="flex justify-center">
+                    <div class="liquid-glass p-2 rounded-2xl inline-flex flex-wrap justify-center gap-2">
+                        <button onclick="switchTab('projects')" id="tab-btn-projects" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all bg-blue-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                            <i class="fa-solid fa-code mr-2"></i> Projects
+                        </button>
+                        <button onclick="switchTab('certificates')" id="tab-btn-certificates" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-white/10">
+                            <i class="fa-solid fa-certificate mr-2"></i> Certificates
+                        </button>
+                        <button onclick="switchTab('achievements')" id="tab-btn-achievements" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-white/10">
+                            <i class="fa-solid fa-trophy mr-2"></i> Achievements
+                        </button>
+                        <button onclick="switchTab('techstack')" id="tab-btn-techstack" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-white/10">
+                            <i class="fa-solid fa-microchip mr-2"></i> Tech Stack
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT CONTAINER -->
+                <div id="tab-contents-container" class="pt-4">
+
+                    <!-- 1. PROJECTS TAB -->
+                    <div id="tab-projects" class="tab-content grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                            <div>
+                                <div class="relative h-56 overflow-hidden group">
+                                    <img src="https://i.pinimg.com/736x/3d/6d/59/3d6d59a2edce5cefb45206ba0447ce5d.jpg" alt="Project 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                                </div>
+                                <div class="p-6 space-y-3">
+                                    <h3 class="text-xl font-bold text-white">Horror Games</h3>
+                                    <p class="text-slate-300 text-sm leading-relaxed">A horror-themed chase game to play with friends</p>
+                                </div>
+                            </div>
+                            <div class="p-6 pt-0 flex justify-between items-center">
+                                <span class="text-xs font-mono px-3.5 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">Blen / Roblox Studio</span>
+                                <button class="text-sm font-semibold text-white hover:text-blue-400 transition-colors flex items-center gap-1.5">Details <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                            <div>
+                                <div class="relative h-56 overflow-hidden group">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlTXsidhYlwgEvvJ8DK3eXm3exUJFzdJwEHU2TS6oBUw&s=10" alt="Project 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                                </div>
+                                <div class="p-6 space-y-3">
+                                    <h3 class="text-xl font-bold text-white">Coming Soon</h3>
+                                    <p class="text-slate-300 text-sm leading-relaxed">N/A</p>
+                                </div>
+                            </div>
+                            <div class="p-6 pt-0 flex justify-between items-center">
+                                <span class="text-xs font-mono px-3.5 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">N/A</span>
+                                <button class="text-sm font-semibold text-white hover:text-blue-400 transition-colors flex items-center gap-1.5">Details <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                            <div>
+                                <div class="relative h-56 overflow-hidden group">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlTXsidhYlwgEvvJ8DK3eXm3exUJFzdJwEHU2TS6oBUw&s=10" alt="Project 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                                </div>
+                                <div class="p-6 space-y-3">
+                                    <h3 class="text-xl font-bold text-white">Coming Soon</h3>
+                                    <p class="text-slate-300 text-sm leading-relaxed">N/A</p>
+                                </div>
+                            </div>
+                            <div class="p-6 pt-0 flex justify-between items-center">
+                                <span class="text-xs font-mono px-3.5 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">N/A</span>
+                                <button class="text-sm font-semibold text-white hover:text-blue-400 transition-colors flex items-center gap-1.5">Details <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. CERTIFICATES TAB -->
+                    <div id="tab-certificates" class="tab-content hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="glass-card rounded-3xl p-6 space-y-4">
+                            <div class="h-48 rounded-2xl overflow-hidden border border-white/10">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlxzoQOJxSe_UVkqHAF3ORyH85wbojUL99vWNlSCz-3f2DVbfj4XpYo4p4&s=10" alt="Cert 1" class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="font-bold text-white text-base">Nothing</h4>
+                            <p class="text-xs text-slate-400 font-mono">N/A</p>
+                        </div>
+                        <div class="glass-card rounded-3xl p-6 space-y-4">
+                            <div class="h-48 rounded-2xl overflow-hidden border border-white/10">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlxzoQOJxSe_UVkqHAF3ORyH85wbojUL99vWNlSCz-3f2DVbfj4XpYo4p4&s=10" alt="Cert 2" class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="font-bold text-white text-base">Nothing</h4>
+                            <p class="text-xs text-slate-400 font-mono">N/A</p>
+                        </div>
+                        <div class="glass-card rounded-3xl p-6 space-y-4">
+                            <div class="h-48 rounded-2xl overflow-hidden border border-white/10">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlxzoQOJxSe_UVkqHAF3ORyH85wbojUL99vWNlSCz-3f2DVbfj4XpYo4p4&s=10" alt="Cert 3" class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="font-bold text-white text-base">Nothing</h4>
+                            <p class="text-xs text-slate-400 font-mono">N/A</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. ACHIEVEMENTS TAB -->
+                    <div id="tab-achievements" class="tab-content hidden grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="glass-card rounded-3xl p-8 flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-3xl flex-shrink-0">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">N/A</h4>
+                                <p class="text-slate-300 text-sm mt-1 leading-relaxed">N/A</p>
+                            </div>
+                        </div>
+                        <div class="glass-card rounded-3xl p-8 flex items-center gap-6">
+                            <div class="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 text-3xl flex-shrink-0">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">N/A</h4>
+                                <p class="text-slate-300 text-sm mt-1 leading-relaxed">N/A</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. TECH STACK TAB -->
+                    <div id="tab-techstack" class="tab-content hidden grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+                        <div class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center text-center space-y-3">
+                            <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-3xl">
+                                <i class="fa-solid fa-cubes"></i>
+                            </div>
+                            <span class="font-bold text-white text-sm">Blender</span>
+                            <span class="text-xs text-slate-400 font-mono">Modeling & Render</span>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center text-center space-y-3">
+                            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-3xl">
+                                <i class="fa-solid fa-shapes"></i>
+                            </div>
+                            <span class="font-bold text-white text-sm">Autodesk Maya</span>
+                            <span class="text-xs text-slate-400 font-mono">Rigging & Anim</span>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center text-center space-y-3">
+                            <div class="w-14 h-14 rounded-2xl bg-slate-500/10 border border-slate-400/30 flex items-center justify-center text-slate-200 text-3xl">
+                                <i class="fa-solid fa-hand-holding-hand"></i>
+                            </div>
+                            <span class="font-bold text-white text-sm">ZBrush</span>
+                            <span class="text-xs text-slate-400 font-mono">3D Sculpting</span>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center text-center space-y-3">
+                            <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-3xl">
+                                <i class="fa-solid fa-paint-brush"></i>
+                            </div>
+                            <span class="font-bold text-white text-sm">Substance</span>
+                            <span class="text-xs text-slate-400 font-mono">Texturing</span>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center text-center space-y-3">
+                            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-3xl">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                            <span class="font-bold text-white text-sm">Unreal Engine</span>
+                            <span class="text-xs text-slate-400 font-mono">Realtime Engine</span>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center text-center space-y-3">
+                            <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-3xl">
+                                <i class="fa-solid fa-image"></i>
+                            </div>
+                            <span class="font-bold text-white text-sm">Photoshop</span>
+                            <span class="text-xs text-slate-400 font-mono">Post-Processing</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= SECTION 4: CONTACT ================= -->
+        <section class="section-page px-8 lg:px-20 max-w-[1550px] mx-auto">
+            <div class="w-full max-w-3xl space-y-8">
+                
+                <div class="text-center space-y-3">
+                    <h2 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-gradient glow-title">Contact Me</h2>
+                    <p class="text-slate-400 text-sm sm:text-base max-w-lg mx-auto font-mono">Send for me</p>
+                </div>
+
+                <div class="liquid-glass rounded-3xl p-10 border border-white/20 relative overflow-hidden shadow-2xl">
+                    <form onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono text-slate-300 uppercase font-semibold">Name</label>
+                                <input type="text" required placeholder="..." class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono text-slate-300 uppercase font-semibold">Email</label>
+                                <input type="email" required placeholder="yourname@domain.com" class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-slate-300 uppercase font-semibold">Content</label>
+                            <textarea rows="4" required placeholder="What do you need ?" class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(59,130,246,0.5)] flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Gửi Tin Nhắn</span>
+                        </button>
+                    </form>
+
+                    <!-- Toast Form Notification -->
+                    <div id="form-toast" class="hidden absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center text-center p-8 space-y-4 z-50">
+                        <div class="w-16 h-16 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-3xl border border-blue-400/40 shadow-[0_0_20px_#3b82f6]">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Tin Nhắn Đã Đóng Gói & Gửi!</h3>
+                        <p class="text-slate-300 text-sm">Cảm ơn bạn! Tôi sẽ liên hệ lại trực tiếp qua Email sớm nhất.</p>
+                        <button onclick="closeToast()" class="px-6 py-2.5 rounded-full liquid-glass text-xs font-bold text-white hover:bg-white/20">Đóng</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 text-slate-500 text-xs font-mono pointer-events-none">
+        <p>© 2026 All Copyright by Wanghi</p>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPT ENGINE -->
+    <script>
+        // --- Check Mobile Device & Show Warning Banner ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024;
+            if (isMobile) {
+                document.getElementById('mobile-warning').classList.remove('hidden');
+            }
+        });
+
+        function dismissMobileWarning() {
+            document.getElementById('mobile-warning').classList.add('hidden');
+        }
+
+        // --- 1. Compact Cursor Spotlight Blur ---
+        const spotlight = document.getElementById('spotlight');
+        window.addEventListener('mousemove', (e) => {
+            spotlight.style.setProperty('--mouse-x', `${e.clientX}px`);
+            spotlight.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
+
+        // --- 2. Energy Accumulation Scroll Snap Engine ---
+        let currentSection = 0;
+        const totalSections = 4;
+        let isTransitioning = false;
+        let accumulatedEnergy = 0;
+        const energyThreshold = 100;
+        const chargeBar = document.getElementById('charge-bar');
+        const sectionElements = document.querySelectorAll('.section-page');
+        const navBtns = document.querySelectorAll('.nav-btn');
+
+        function goToSection(index) {
+            if (index < 0 || index >= totalSections || index === currentSection) return;
+            isTransitioning = true;
+            
+            sectionElements[currentSection].classList.remove('active');
+            currentSection = index;
+            sectionElements[currentSection].classList.add('active');
+
+            navBtns.forEach((btn, idx) => {
+                if (idx === currentSection) {
+                    btn.className = "nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all text-white bg-blue-600/50 border border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.5)]";
+                } else {
+                    btn.className = "nav-btn px-5 py-2 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all";
+                }
+            });
+
+            setTimeout(() => {
+                isTransitioning = false;
+                accumulatedEnergy = 0;
+                updateChargeUI();
+            }, 800);
+        }
+
+        function updateChargeUI() {
+            const percentage = Math.min(100, Math.max(0, (accumulatedEnergy / energyThreshold) * 100));
+            chargeBar.style.width = `${percentage}%`;
+            chargeBar.style.opacity = percentage > 0 ? '1' : '0';
+        }
+
+        window.addEventListener('wheel', (e) => {
+            if (isTransitioning) return;
+
+            accumulatedEnergy += Math.abs(e.deltaY) * 0.45;
+            updateChargeUI();
+
+            if (accumulatedEnergy >= energyThreshold) {
+                if (e.deltaY > 0 && currentSection < totalSections - 1) {
+                    goToSection(currentSection + 1);
+                } else if (e.deltaY < 0 && currentSection > 0) {
+                    goToSection(currentSection - 1);
+                } else {
+                    accumulatedEnergy = 0;
+                    updateChargeUI();
+                }
+            }
+
+            clearTimeout(window.energyDecayTimer);
+            window.energyDecayTimer = setTimeout(() => {
+                accumulatedEnergy = 0;
+                updateChargeUI();
+            }, 250);
+        }, { passive: true });
+
+
+        // --- 3. Interactive Mouse-Tilt & Click-Flip 3D Card ---
+        const cardWrapper = document.getElementById('id-card');
+        let isCardFlipped = false;
+        let isDraggingCard = false;
+        let startClickPos = { x: 0, y: 0 };
+
+        cardWrapper.addEventListener('mousedown', (e) => {
+            isDraggingCard = false;
+            startClickPos = { x: e.clientX, y: e.clientY };
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (Math.hypot(e.clientX - startClickPos.x, e.clientY - startClickPos.y) > 5) {
+                isDraggingCard = true;
+            }
+
+            if (currentSection === 0 && cardWrapper) {
+                const rect = cardWrapper.getBoundingClientRect();
+                const cardCenterX = rect.left + rect.width / 2;
+                const cardCenterY = rect.top + rect.height / 2;
+
+                const mouseX = e.clientX - cardCenterX;
+                const mouseY = e.clientY - cardCenterY;
+
+                const rotateX = (-mouseY / 25).toFixed(2);
+                const rotateY = (mouseX / 25).toFixed(2);
+                const flipOffset = isCardFlipped ? 180 : 0;
+
+                cardWrapper.style.transform = `rotateX(${rotateX}deg) rotateY(${Number(rotateY) + flipOffset}deg)`;
+            }
+        });
+
+        function toggleCardFlip(e) {
+            if (!isDraggingCard) {
+                isCardFlipped = !isCardFlipped;
+                cardWrapper.classList.toggle('flipped', isCardFlipped);
+            }
+        }
+
+
+        // --- 4. Meteor Shooting Stars Canvas Engine ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let meteors = [];
+
+        function createMeteor() {
+            const angle = Math.PI / 4; // Góc chéo 45 độ
+            return {
+                x: Math.random() * (canvas.width + 300) - 150,
+                y: Math.random() * -200,
+                length: Math.random() * 80 + 40,
+                speed: Math.random() * 8 + 4,
+                alpha: Math.random() * 0.7 + 0.3,
+                width: Math.random() * 1.5 + 0.8,
+                dx: Math.cos(angle),
+                dy: Math.sin(angle)
+            };
+        }
+
+        function resizeBgCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            meteors = [];
+            const count = 25; // Số lượng vệt sao băng xuất hiện liên tục
+            for (let i = 0; i < count; i++) {
+                let m = createMeteor();
+                // Phân bổ rải rác sao băng ngay khi bắt đầu
+                m.y = Math.random() * canvas.height;
+                m.x = Math.random() * canvas.width;
+                meteors.push(m);
+            }
+        }
+        window.addEventListener('resize', resizeBgCanvas);
+        resizeBgCanvas();
+
+        function animateBgCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            meteors.forEach((m, index) => {
+                m.x += m.dx * m.speed;
+                m.y += m.dy * m.speed;
+
+                // Tính tọa độ đuôi sao băng
+                const tailX = m.x - m.dx * m.length;
+                const tailY = m.y - m.dy * m.length;
+
+                // Gradient tạo hiệu ứng đuôi mờ dần
+                const gradient = ctx.createLinearGradient(tailX, tailY, m.x, m.y);
+                gradient.addColorStop(0, 'rgba(59, 130, 246, 0)');
+                gradient.addColorStop(0.7, `rgba(147, 197, 253, ${m.alpha * 0.5})`);
+                gradient.addColorStop(1, `rgba(255, 255, 255, ${m.alpha})`);
+
+                ctx.beginPath();
+                ctx.moveTo(tailX, tailY);
+                ctx.lineTo(m.x, m.y);
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = m.width;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                // Tạo điểm sáng đầu sao băng
+                ctx.beginPath();
+                ctx.arc(m.x, m.y, m.width * 1.2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${m.alpha})`;
+                ctx.shadowColor = '#60a5fa';
+                ctx.shadowBlur = 8;
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset hiệu ứng phát sáng cho nét vẽ sau
+
+                // Reset sao băng mới khi bay khỏi màn hình
+                if (m.y > canvas.height + 100 || m.x > canvas.width + 100) {
+                    meteors[index] = createMeteor();
+                }
+            });
+
+            requestAnimationFrame(animateBgCanvas);
+        }
+        animateBgCanvas();
+
+
+        // --- 5. Portfolio Sub-Tab Navigation ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-white/10";
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabId}`).className = "tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all bg-blue-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]";
+        }
+
+        // --- 6. Form Submit Toast ---
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('form-toast').classList.remove('hidden');
+        }
+
+        function closeToast() {
+            document.getElementById('form-toast').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
