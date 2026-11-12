@@ -889,7 +889,7 @@
             const submitBtn = document.getElementById('submit-btn');
             const originalText = submitBtn.innerHTML;
             
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Đang gửi...</span>`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Sending...</span>`;
             submitBtn.disabled = true;
 
             const formData = new FormData(form);
@@ -908,10 +908,10 @@
                     if (toast) toast.classList.remove('hidden');
                     form.reset();
                 } else {
-                    alert("Oops! Có lỗi xảy ra khi gửi, vui lòng thử lại sau.");
+                    alert("Oops!");
                 }
             } catch (error) {
-                alert("Không thể kết nối tới server. Kiểm tra lại đường truyền mạng nhé!");
+                alert("Can't Connecting");
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
