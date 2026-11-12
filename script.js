@@ -1,23 +1,11 @@
-// --- Check Mobile Device & Show Warning Banner ---
-window.addEventListener('DOMContentLoaded', () => {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024;
-    if (isMobile) {
-        document.getElementById('mobile-warning').classList.remove('hidden');
-    }
-});
-
-function dismissMobileWarning() {
-    document.getElementById('mobile-warning').classList.add('hidden');
-}
-
-// --- 1. Compact Cursor Spotlight Blur ---
+// --- Compact Cursor Spotlight Blur ---
 const spotlight = document.getElementById('spotlight');
 window.addEventListener('mousemove', (e) => {
     spotlight.style.setProperty('--mouse-x', `${e.clientX}px`);
     spotlight.style.setProperty('--mouse-y', `${e.clientY}px`);
 });
 
-// --- 2. Energy Accumulation Scroll Snap Engine ---
+// --- Energy Accumulation Scroll Snap Engine (Chỉ kích hoạt trên Desktop) ---
 let currentSection = 0;
 const totalSections = 4;
 let isTransitioning = false;
@@ -28,6 +16,12 @@ const sectionElements = document.querySelectorAll('.section-page');
 const navBtns = document.querySelectorAll('.nav-btn');
 
 function goToSection(index) {
+    if (window.innerWidth < 1024) {
+        sectionElements[index].scrollIntoView({ behavior: 'smooth' });
+        updateNavActive(index);
+        return;
+    }
+
     if (index < 0 || index >= totalSections || index === currentSection) return;
     isTransitioning = true;
     
@@ -35,19 +29,23 @@ function goToSection(index) {
     currentSection = index;
     sectionElements[currentSection].classList.add('active');
 
-    navBtns.forEach((btn, idx) => {
-        if (idx === currentSection) {
-            btn.className = "nav-btn px-5 py-2 rounded-full text-sm font-semibold transition-all text-white bg-blue-600/50 border border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.5)]";
-        } else {
-            btn.className = "nav-btn px-5 py-2 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all";
-        }
-    });
+    updateNavActive(currentSection);
 
     setTimeout(() => {
         isTransitioning = false;
         accumulatedEnergy = 0;
         updateChargeUI();
-    }, 800);
+    }, 700);
+}
+
+function updateNavActive(idxTarget) {
+    navBtns.forEach((btn, idx) => {
+        if (idx === idxTarget) {
+            btn.className = "nav-btn px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all text-white bg-blue-600/50 border border-blue-400/40 shadow-[0_0_15px_rgba(59,130,246,0.5)]";
+        } else {
+            btn.className = "nav-btn px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all";
+        }
+    });
 }
 
 function updateChargeUI() {
@@ -57,7 +55,7 @@ function updateChargeUI() {
 }
 
 window.addEventListener('wheel', (e) => {
-    if (isTransitioning) return;
+    if (window.innerWidth < 1024 || isTransitioning) return;
 
     accumulatedEnergy += Math.abs(e.deltaY) * 0.45;
     updateChargeUI();
@@ -81,7 +79,7 @@ window.addEventListener('wheel', (e) => {
 }, { passive: true });
 
 
-// --- 3. Interactive Mouse-Tilt & Click-Flip 3D Card ---
+// --- Interactive Mouse-Tilt & Click-Flip 3D Card ---
 const cardWrapper = document.getElementById('id-card');
 let isCardFlipped = false;
 let isDraggingCard = false;
@@ -92,28 +90,28 @@ if (cardWrapper) {
         isDraggingCard = false;
         startClickPos = { x: e.clientX, y: e.clientY };
     });
+
+    window.addEventListener('mousemove', (e) => {
+        if (Math.hypot(e.clientX - startClickPos.x, e.clientY - startClickPos.y) > 5) {
+            isDraggingCard = true;
+        }
+
+        if (currentSection === 0 && cardWrapper) {
+            const rect = cardWrapper.getBoundingClientRect();
+            const cardCenterX = rect.left + rect.width / 2;
+            const cardCenterY = rect.top + rect.height / 2;
+
+            const mouseX = e.clientX - cardCenterX;
+            const mouseY = e.clientY - cardCenterY;
+
+            const rotateX = (-mouseY / 25).toFixed(2);
+            const rotateY = (mouseX / 25).toFixed(2);
+            const flipOffset = isCardFlipped ? 180 : 0;
+
+            cardWrapper.style.transform = `rotateX(${rotateX}deg) rotateY(${Number(rotateY) + flipOffset}deg)`;
+        }
+    });
 }
-
-window.addEventListener('mousemove', (e) => {
-    if (Math.hypot(e.clientX - startClickPos.x, e.clientY - startClickPos.y) > 5) {
-        isDraggingCard = true;
-    }
-
-    if (currentSection === 0 && cardWrapper) {
-        const rect = cardWrapper.getBoundingClientRect();
-        const cardCenterX = rect.left + rect.width / 2;
-        const cardCenterY = rect.top + rect.height / 2;
-
-        const mouseX = e.clientX - cardCenterX;
-        const mouseY = e.clientY - cardCenterY;
-
-        const rotateX = (-mouseY / 25).toFixed(2);
-        const rotateY = (mouseX / 25).toFixed(2);
-        const flipOffset = isCardFlipped ? 180 : 0;
-
-        cardWrapper.style.transform = `rotateX(${rotateX}deg) rotateY(${Number(rotateY) + flipOffset}deg)`;
-    }
-});
 
 function toggleCardFlip(e) {
     if (!isDraggingCard && cardWrapper) {
@@ -123,13 +121,13 @@ function toggleCardFlip(e) {
 }
 
 
-// --- 4. Meteor Shooting Stars Canvas Engine ---
+// --- Meteor Shooting Stars Canvas Engine ---
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 let meteors = [];
 
 function createMeteor() {
-    const angle = Math.PI / 4; // Góc chéo 45 độ
+    const angle = Math.PI / 4;
     return {
         x: Math.random() * (canvas.width + 300) - 150,
         y: Math.random() * -200,
@@ -147,7 +145,7 @@ function resizeBgCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     meteors = [];
-    const count = 25; // Số lượng vệt sao băng xuất hiện liên tục
+    const count = window.innerWidth < 1024 ? 12 : 25;
     for (let i = 0; i < count; i++) {
         let m = createMeteor();
         m.y = Math.random() * canvas.height;
@@ -167,11 +165,9 @@ if (canvas) {
             m.x += m.dx * m.speed;
             m.y += m.dy * m.speed;
 
-            // Tính tọa độ đuôi sao băng
             const tailX = m.x - m.dx * m.length;
             const tailY = m.y - m.dy * m.length;
 
-            // Gradient tạo hiệu ứng đuôi mờ dần
             const gradient = ctx.createLinearGradient(tailX, tailY, m.x, m.y);
             gradient.addColorStop(0, 'rgba(59, 130, 246, 0)');
             gradient.addColorStop(0.7, `rgba(147, 197, 253, ${m.alpha * 0.5})`);
@@ -185,7 +181,6 @@ if (canvas) {
             ctx.lineCap = 'round';
             ctx.stroke();
 
-            // Tạo điểm sáng đầu sao băng
             ctx.beginPath();
             ctx.arc(m.x, m.y, m.width * 1.2, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(255, 255, 255, ${m.alpha})`;
@@ -194,7 +189,6 @@ if (canvas) {
             ctx.fill();
             ctx.shadowBlur = 0;
 
-            // Reset sao băng mới khi bay khỏi màn hình
             if (m.y > canvas.height + 100 || m.x > canvas.width + 100) {
                 meteors[index] = createMeteor();
             }
@@ -206,20 +200,20 @@ if (canvas) {
 }
 
 
-// --- 5. Portfolio Sub-Tab Navigation ---
+// --- Portfolio Sub-Tab Navigation ---
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.className = "tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-white/10";
+        btn.className = "tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-white/10";
     });
 
     const targetTab = document.getElementById(`tab-${tabId}`);
     const targetBtn = document.getElementById(`tab-btn-${tabId}`);
     if (targetTab) targetTab.classList.remove('hidden');
-    if (targetBtn) targetBtn.className = "tab-btn px-6 py-2.5 rounded-xl text-sm font-semibold transition-all bg-blue-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]";
+    if (targetBtn) targetBtn.className = "tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-blue-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]";
 }
 
-// --- 6. Form Submit Toast ---
+// --- Form Submit Toast ---
 function handleFormSubmit(e) {
     e.preventDefault();
     const toast = document.getElementById('form-toast');

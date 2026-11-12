@@ -3,6 +3,7 @@ body {
     background-color: #000000;
     color: #f8fafc;
     font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
 }
 
 /* Modern Ultra Liquid Glass Styling */
@@ -78,8 +79,8 @@ body {
 }
 
 .card-3d-wrapper {
-    width: 320px;
-    height: 460px;
+    width: 350px;
+    height: 500px;
     transform-style: preserve-3d;
     transition: transform 0.1s ease-out;
     cursor: pointer;
@@ -115,35 +116,68 @@ body {
     text-shadow: 0 0 35px rgba(59, 130, 246, 0.45);
 }
 
-/* Section Container Scroll Snap Behavior */
-.scroll-container {
-    height: 100vh;
-    overflow-y: hidden;
-    position: relative;
+/* Desktop Scroll Snap Behavior - Cố định vị trí và căn giữa tuyệt đối các trang */
+@media (min-width: 1024px) {
+    html {
+        overflow: hidden;
+        height: 100%;
+    }
+    body {
+        height: 100%;
+        overflow: hidden;
+    }
+    .scroll-container {
+        height: 100vh;
+        overflow-y: hidden;
+        position: relative;
+    }
+    .section-page {
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(30px) scale(0.97);
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.7s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4rem;
+    }
+    .section-page.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+        z-index: 10;
+    }
 }
 
-.section-page {
-    height: 100vh;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(40px) scale(0.97);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 6rem;
-    padding-bottom: 3rem;
-}
-
-.section-page.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-    z-index: 10;
+/* Mobile Natural Scroll Layout */
+@media (max-width: 1023px) {
+    .scroll-container {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        padding-top: 6rem;
+        padding-bottom: 4rem;
+    }
+    .section-page {
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        height: auto !important;
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+    }
+    header {
+        width: 95% !important;
+    }
 }
 
 /* Energy Charging Visual Indicator */
