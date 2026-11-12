@@ -252,7 +252,7 @@
         </div>
         <div class="space-y-1 flex-1">
             <h4 class="font-bold text-white text-sm">Desktop Experience Recommended</h4>
-            <p class="text-slate-300 text-xs leading-relaxed">For the best interactive 3D liquid glass experience and smooth navigation, please view this portfolio on a Desktop or Laptop.</p>
+            <p class="text-slate-300 text-xs leading-relaxed">For the best experience, please view this portfolio on a Desktop or Laptop.</p>
             <button onclick="dismissDesktopNotice()" class="text-xs font-semibold text-blue-400 hover:text-blue-300 pt-1 inline-block transition-colors">Got it, dismiss <i class="fa-solid fa-arrow-right ml-1 text-[10px]"></i></button>
         </div>
     </div>
@@ -621,24 +621,24 @@
                 </div>
 
                 <div class="liquid-glass rounded-3xl p-8 sm:p-10 border border-white/20 relative overflow-hidden shadow-2xl">
-                    <form onsubmit="handleFormSubmit(event)" class="space-y-6">
+                    <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="text-xs font-mono text-slate-300 uppercase font-semibold">Name</label>
-                                <input type="text" required placeholder="..." class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm">
+                                <input type="text" name="name" required placeholder="..." class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-xs font-mono text-slate-300 uppercase font-semibold">Email</label>
-                                <input type="email" required placeholder="yourname@domain.com" class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm">
+                                <input type="email" name="email" required placeholder="yourname@domain.com" class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm">
                             </div>
                         </div>
 
                         <div class="space-y-2">
                             <label class="text-xs font-mono text-slate-300 uppercase font-semibold">Content</label>
-                            <textarea rows="4" required placeholder="What do you need ?" class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"></textarea>
+                            <textarea rows="4" name="message" required placeholder="What do you need ?" class="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full py-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(59,130,246,0.5)] flex items-center justify-center gap-3">
+                        <button type="submit" id="submit-btn" class="w-full py-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(59,130,246,0.5)] flex items-center justify-center gap-3">
                             <i class="fa-solid fa-paper-plane"></i>
                             <span>Gửi Tin Nhắn</span>
                         </button>
@@ -882,11 +882,40 @@
             if (targetBtn) targetBtn.className = "tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-blue-600 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]";
         }
 
-        // --- Form Submit Toast ---
-        function handleFormSubmit(e) {
+        // --- Form Submit via Formspree AJAX ---
+        async function handleFormSubmit(e) {
             e.preventDefault();
-            const toast = document.getElementById('form-toast');
-            if (toast) toast.classList.remove('hidden');
+            const form = e.target;
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Đang gửi...</span>`;
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("https://formspree.io/f/xgakeggy", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'Accept': 'json'
+                    }
+                });
+
+                if (response.ok) {
+                    const toast = document.getElementById('form-toast');
+                    if (toast) toast.classList.remove('hidden');
+                    form.reset();
+                } else {
+                    alert("Oops! Có lỗi xảy ra khi gửi, vui lòng thử lại sau.");
+                }
+            } catch (error) {
+                alert("Không thể kết nối tới server. Kiểm tra lại đường truyền mạng nhé!");
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         }
 
         function closeToast() {
